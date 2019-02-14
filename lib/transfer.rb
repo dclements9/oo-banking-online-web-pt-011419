@@ -13,7 +13,7 @@ class Transfer
     @sender.valid? && @receiver.valid?
   end
   def execute_transaction
-    if valid? && @status == "pending"
+    if valid? && @status == "pending" && @sender.balance > @amount
       @receiver.balance += @amount
       @sender.balance -= @amount
       @status = "complete"
@@ -24,7 +24,7 @@ class Transfer
     end
   end
   def reverse_transfer
-    if valid? && @status == "pending"
+    if valid? && @status == "pending" && @receiver.balance > @amount
       @sender.balance += @amount
       @receiver.balance -= @amount
       @status = "reversed"
